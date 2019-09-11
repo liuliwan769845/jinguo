@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>攻略</title>
+		<#include "/header.html">
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+        	<div class="form-group col-sm-2">
+                <input type="text" class="form-control" v-model="q.title" @keyup.enter="query" placeholder="标题"/>
+            </div>
+            <a class="btn btn-default" @click="query">查询</a>
+			<#if shiro.hasPermission("sys:introduction:save")>
+            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			</#if>
+			<#if shiro.hasPermission("sys:introduction:update")>
+            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			</#if>
+			<#if shiro.hasPermission("sys:introduction:delete")>
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			</#if>
+        </div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal" style="width: 1000px">
+														                    <div class="form-group">
+                        <div class="col-sm-2 control-label">标题</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="introduction.title" placeholder="标题"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">具体介绍</div>
+                        <div class="col-sm-10">
+                            <!--<input type="text" class="form-control" v-model="introduction.content" placeholder="具体介绍"/>-->
+                            <textarea id="layeditDemo" lay-verify="content"></textarea>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">状态</div>
+                        <div class="col-sm-10">
+                            <!--<input type="text" class="form-control" v-model="introduction.state" placeholder="0正常 1禁用"/>-->
+                            <select class="form-control" v-model="introduction.state" @keyup.enter="query" >
+                                <option value="0">正常</option>
+                                <option value="1">禁用</option>
+                            </select>
+                        </div>
+                    </div>
+											                    <!--<div class="form-group">-->
+                        <!--<div class="col-sm-2 control-label">创建时间</div>-->
+                        <!--<div class="col-sm-10">-->
+                            <!--<input type="text" class="form-control" v-model="introduction.createDate" placeholder="创建时间"/>-->
+                        <!--</div>-->
+                    <!--</div>-->
+							            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" id="btnSaveOrUpdate" data-loading-text="保存中..." @click="saveOrUpdate" value="确定"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+        </form>
+    </div>
+</div>
+<link rel="stylesheet" href="${request.contextPath}/statics/plugins/layui-v2.4.5/css/layui.css">
+<script src="${request.contextPath}/statics/plugins/layui-v2.4.5/layui.js"charset="utf-8"></script>
+<script src="${request.contextPath}/statics/js/modules/sys/introduction.js?_${.now?long}"></script>
+</body>
+</html>

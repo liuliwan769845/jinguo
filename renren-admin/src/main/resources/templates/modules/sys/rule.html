@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>规则表</title>
+		<#include "/header.html">
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+			<#if shiro.hasPermission("sys:rule:save")>
+            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			</#if>
+			<#if shiro.hasPermission("sys:rule:update")>
+            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			</#if>
+			<#if shiro.hasPermission("sys:rule:delete")>
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			</#if>
+        </div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="layui-form form-horizontal"  style="width: 1000px">
+					<div class="form-group">
+                        <div class="col-sm-2 control-label">规则标题</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="rule.title" placeholder="规则标题"/>
+                        </div>
+                    </div>
+					<div class="form-group">
+                        <div class="col-sm-2 control-label">规则详情</div>
+                        <div class="col-sm-10">
+                            <!--<input type="text" class="form-control" v-model="rule.content" placeholder="规则详情"/>-->
+                            <textarea id="layeditDemo" lay-verify="content"></textarea>
+                        </div>
+                    </div>
+					<div class="form-group">
+                        <div class="col-sm-2 control-label">规则</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" value="0" v-model="rule.type" placeholder="0" readonly="readonly"/>
+                        </div>
+                    </div>
+											                    <!--<div class="form-group">-->
+                        <!--<div class="col-sm-2 control-label"></div>-->
+                        <!--<div class="col-sm-10">-->
+                            <!--<input type="text" class="form-control" v-model="rule.createDate" placeholder=""/>-->
+                        <!--</div>-->
+                    <!--</div>-->
+							            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" id="btnSaveOrUpdate" data-loading-text="保存中..." @click="saveOrUpdate" value="确定"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+        </form>
+    </div>
+</div>
+<link rel="stylesheet" href="${request.contextPath}/statics/plugins/layui-v2.4.5/css/layui.css">
+<script src="${request.contextPath}/statics/plugins/layui-v2.4.5/layui.js"charset="utf-8"></script>
+<script src="${request.contextPath}/statics/js/modules/sys/rule.js?_${.now?long}"></script>
+</body>
+</html>

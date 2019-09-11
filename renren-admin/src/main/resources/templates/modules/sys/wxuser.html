@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>用户表</title>
+		<#include "/header.html">
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+        	<div class="form-group col-sm-2">
+                <input type="text" class="form-control" v-model="q.name" @keyup.enter="query" placeholder="用户名称"/>
+            </div>
+            <a class="btn btn-default" @click="query">查询</a>
+			<#if shiro.hasPermission("sys:wxuser:save")>
+            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			</#if>
+			<#if shiro.hasPermission("sys:wxuser:update")>
+            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			</#if>
+			<#if shiro.hasPermission("sys:wxuser:delete")>
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			</#if>
+        </div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+														                    <div class="form-group">
+                        <div class="col-sm-2 control-label">名称</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="wxuser.name" placeholder="名称"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">openid</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="wxuser.wxOpenId" placeholder="openid"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">头像      </div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="wxuser.imgUrl" placeholder="头像      "/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">金币数量</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="wxuser.goldNum" placeholder="金币数量"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">余额</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="wxuser.balance" placeholder="余额"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">金果总数量</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="wxuser.goldenFruitCount" placeholder="金果总数量"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">剩余金果数量</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="wxuser.goldenFruitNum" placeholder="剩余金果数量"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">金果开始计算时间(时间戳/秒)</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="wxuser.goldenFruitTime" placeholder="金果开始计算时间(时间戳/秒)"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">手机号</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="wxuser.mobile" placeholder="手机号"/>
+                        </div>
+                    </div>
+							            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" id="btnSaveOrUpdate" data-loading-text="保存中..." @click="saveOrUpdate" value="确定"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="${request.contextPath}/statics/js/modules/sys/wxuser.js?_${.now?long}"></script>
+</body>
+</html>

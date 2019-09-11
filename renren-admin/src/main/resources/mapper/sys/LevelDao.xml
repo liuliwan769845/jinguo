@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.sys.dao.LevelDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.sys.entity.LevelEntity" id="levelMap">
+        <result property="id" column="id"/>
+        <result property="levelNum" column="level_num"/>
+        <result property="exp" column="exp"/>
+        <result property="yield" column="yield"/>
+        <result property="yieldCount" column="yield_count"/>
+        <result property="isWorker" column="is_worker"/>
+        <result property="workerCount" column="worker_count"/>
+        <result property="couponCount" column="coupon_count"/>
+        <result property="couponShop" column="coupon_shop"/>
+        <result property="createDate" column="create_date"/>
+    </resultMap>
+
+
+</mapper>

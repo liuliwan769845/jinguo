@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>商品表</title>
+		<#include "/header.html">
+</head>
+<body>
+<style>
+    .el-upload__input {
+        display: none !important;
+    }
+</style>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+        	<div class="form-group col-sm-2">
+                <input type="text" class="form-control" v-model="q.classifyId" @keyup.enter="query" placeholder="分类编号"/>
+            </div>
+            <a class="btn btn-default" @click="query">查询</a>
+			<#if shiro.hasPermission("sys:product:save")>
+            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			</#if>
+			<#if shiro.hasPermission("sys:product:update")>
+            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			</#if>
+			<#if shiro.hasPermission("sys:product:delete")>
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			</#if>
+        </div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+					<div class="form-group">
+                        <div class="col-sm-2 control-label">分类</div>
+                        <div class="col-sm-10">
+                            <select class="form-control" v-model="product.classifyId" id="classifyId">
+
+                            </select>
+                            <!-- <input type="text" class="form-control" v-model="product.classifyId" placeholder="分类ID"/> -->
+                        </div>
+                    </div>
+					<div class="form-group">
+                        <div class="col-sm-2 control-label">品牌</div>
+                        <div class="col-sm-10">
+                        	<select class="form-control" v-model="product.brandId" id="brandId">
+
+                            </select>
+                            <!-- <input type="text" class="form-control" v-model="product.brandId" placeholder="品牌ID"/> -->
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">商品名称</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="product.name" placeholder="商品名称"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">商品标题</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="product.title" placeholder="商品标题"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">商品主图</div>
+                        <div class="col-sm-10">
+                        	<el-upload
+                                    class="upload-demo"
+                                    action="../../sys/product/upload"
+                                    :on-preview="handlePreview"
+                                    :on-remove="handleRemove1"
+                                    :file-list="fileList1"
+                                    :on-success="handsuccess1"
+                                    list-type="picture">
+                                <el-button size="small" type="primary">点击上传</el-button>
+                            </el-upload>
+                            <input type="text" class="form-control" v-model="product.imgUrl" style="display: none;"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">商品介绍</div>
+                        <div class="col-sm-10">
+                            <!-- <input type="text" class="form-control" v-model="product.content" placeholder="商品介绍"/> -->
+                            <textarea id="layeditDemo" lay-verify="content"></textarea>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">商品购买单价</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="product.price" placeholder="商品购买单价"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">商品购买金币数量</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="product.gold" placeholder="商品购买金币数量"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">商品原价</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="product.originalPrice" placeholder="商品原价"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">库存</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="product.stock" placeholder="库存"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">分类推荐</div>
+                        <div class="col-sm-10">
+                        	<select class="form-control" v-model="product.type" id="type">
+                        	<option value='0'>默认</option>
+							<option value='1'>主推</option>
+							<option value='2'>推荐一</option>
+							<option value='3'>推荐二</option>
+							<option value='4'>推荐三</option>
+                            </select>
+                            <!-- <input type="text" class="form-control" v-model="product.brandId" placeholder="品牌ID"/> -->
+                        </div>
+                    </div>
+							            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" id="btnSaveOrUpdate" data-loading-text="保存中..." @click="saveOrUpdate" value="确定"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="${request.contextPath}/statics/plugins/layui-v2.4.5/css/layui.css">
+<script src="${request.contextPath}/statics/plugins/layui-v2.4.5/layui.js"charset="utf-8"></script>
+<script src="${request.contextPath}/statics/js/modules/sys/product.js?_${.now?long}"></script>
+</body>
+</html>
